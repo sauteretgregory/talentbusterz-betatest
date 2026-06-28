@@ -1,25 +1,18 @@
-# TalentBusterZ — Betatest public v0.8.1
+# TalentBusterZ — Betatest public v0.8.4
 
-Démonstrateur public générique TalentBusterZ pour tests bêta.
+Démonstrateur public générique TalentBusterZ.
 
-## Principe
+Aucune donnée candidat n’est hébergée dans ce repo. Les utilisateurs chargent localement leur fichier RAW et, si besoin, leur CV source. Le navigateur lit ces fichiers localement : ils ne sont pas publiés dans GitHub.
 
-Ce repo ne doit contenir aucune donnée candidat : pas de CV source, pas de RAW candidat détaillé, pas de backup, pas d’export et pas de coordonnées.
+## États de données
 
-Les bêta-testeurs utilisent le site en chargeant localement leur fichier RAW envoyé séparément par Grégory. Le RAW est lu dans le navigateur et reste un fichier personnel portable.
+- Découverte : pas de CV, pas de RAW, questions progressives, RAW démo.
+- RAW local : profil partiellement connu via le fichier RAW chargé, analyse autorisée, livrables sérieux bloqués sans CV source.
+- Pro complet : CV source + RAW local, livrables autorisés.
 
-## Modes
+## Hotfix v0.8.4
 
-- Découverte sans CV : curiosité, score prudent, RAW démo progressif, pas de CV final.
-- RAW local chargé : analyse possible avec mémoire locale, confiance moyenne, CV final bloqué tant que le CV source n’est pas chargé.
-- Mode pro candidat : CV source + dernier RAW connu, livrables sérieux autorisés.
-
-## Sécurité provisoire
-
-Tant que les briques sécurité/RGPD ne sont pas finalisées :
-
-- ne pas publier de CV source réel ;
-- ne pas publier de RAW candidat détaillé ;
-- ne pas publier de coordonnées, nom complet, adresse, téléphone, email ;
-- conserver les sources réelles hors GitHub ;
-- envoyer les RAW aux personnes concernées par canal contrôlé.
+- Clarification de l’utilité du CV source.
+- Refus des manifestes utilisés à tort comme RAW.
+- Après une réponse, la mémoire est mise à jour immédiatement, le score évolue et la question suivante s’affiche.
+- Les livrables sérieux sont clairement bloqués si seul le RAW est chargé.
