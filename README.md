@@ -1,18 +1,57 @@
-# TalentBusterZ — Betatest public v0.8.4
+# TalentBusterZ — betatest V0.8.4 hotfix GitHub-safe
 
-Démonstrateur public générique TalentBusterZ.
+Démonstrateur statique local : CV augmenté, matching offre/profil, Question Engine et livrables de travail.
 
-Aucune donnée candidat n’est hébergée dans ce repo. Les utilisateurs chargent localement leur fichier RAW et, si besoin, leur CV source. Le navigateur lit ces fichiers localement : ils ne sont pas publiés dans GitHub.
+## Correctif V0.8.4 hotfix
 
-## États de données
+Cette version reprend les corrections de la branche hotfix actuelle `talentbusterz_betatest_v0_8_4_hotfix` et retire toute donnée privée du repo.
 
-- Découverte : pas de CV, pas de RAW, questions progressives, RAW démo.
-- RAW local : profil partiellement connu via le fichier RAW chargé, analyse autorisée, livrables sérieux bloqués sans CV source.
-- Pro complet : CV source + RAW local, livrables autorisés.
+Le repo GitHub ne doit contenir que :
+- des données fictives ;
+- des exemples anonymisés ;
+- des placeholders ;
+- des règles produit ;
+- du code applicatif.
 
-## Hotfix v0.8.4
+## Règle centrale
 
-- Clarification de l’utilité du CV source.
-- Refus des manifestes utilisés à tort comme RAW.
-- Après une réponse, la mémoire est mise à jour immédiatement, le score évolue et la question suivante s’affiche.
-- Les livrables sérieux sont clairement bloqués si seul le RAW est chargé.
+- **RAW chargé = continuité active**
+- Le CV source est **optionnel** en mode local.
+- Le CV source ne bloque plus les livrables de travail.
+- Il bloque uniquement le **pack final source-vérifié**.
+- Chaque livrable généré doit être accompagné d’un RAW actualisé ou d’un manifeste RAW inchangé.
+
+## Livrables projet
+
+Quand l'utilisateur clique sur **Générer les livrables**, le prototype doit produire :
+
+1. CV Word de travail + RAW actualisé
+2. Note / scoring TalentBusterZ + RAW actualisé
+3. Points forts / axes d'amélioration + RAW actualisé
+4. RTOU + RAW actualisé
+
+## Sécurité / confidentialité
+
+Ne jamais pousser dans le repo :
+- vrai CV ;
+- vrai RAW candidat ;
+- nom de candidat test réel ;
+- nom de client privé ;
+- métriques projet réelles ;
+- coordonnées ;
+- données sensibles ;
+- captures LinkedIn personnelles ;
+- exports issus d’un vrai entretien.
+
+Les exemples du repo utilisent uniquement :
+- `Profil Démo`
+- `Client Luxe Démo`
+- `Projet RCU fictif`
+- `volume fictif`
+- `périmètre fictif`
+
+## Démarrage local
+
+Ouvrir `index.html` dans un navigateur.
+
+Aucun serveur n’est nécessaire.

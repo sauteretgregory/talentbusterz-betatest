@@ -1,0 +1,44 @@
+{
+  "raw_schema": {
+    "name": "TalentBusterZ RAW fictif GitHub-safe hotfix",
+    "version": "0.8.4-hotfix-sample",
+    "mode": "local_static_demo",
+    "privacy": "fictional_sample_only"
+  },
+  "candidate": {
+    "candidate_id": "profil_demo_anonyme",
+    "display_label": "Profil Démo",
+    "positioning": [
+      "Chef de projet IT senior",
+      "AMOA CRM/Data",
+      "Data/BI Luxe-Retail",
+      "Coordination métier/IT"
+    ]
+  },
+  "evidence_library": [
+    {
+      "evidence_id": "demo_rcu_luxe",
+      "label": "Projet RCU fictif — CRM/Data retail omnicanal",
+      "context": "Référentiel client unique fictif dans un environnement luxe/retail de démonstration.",
+      "signals": [
+        "Luxe",
+        "Retail",
+        "CRM",
+        "Data",
+        "BI",
+        "RGPD",
+        "AMOA"
+      ],
+      "numbers": {
+        "clients": "volume fictif à remplacer par donnée validée utilisateur",
+        "anonymized_clients": "volume fictif à remplacer par donnée validée utilisateur",
+        "users": "volume fictif à remplacer par donnée validée utilisateur",
+        "contributors": "périmètre fictif à remplacer par donnée validée utilisateur"
+      },
+      "usage_status": "démonstration uniquement — ne pas utiliser comme preuve réelle"
+    }
+  ],
+  "_tbz_trace": {
+    "sessions": []
+  }
+}
