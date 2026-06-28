@@ -1,0 +1,23 @@
+{
+  "template_name": "TalentBusterZ Betatest Public Template",
+  "template_version": "0.8.1-hotfix",
+  "created_at": "2026-06-28",
+  "purpose": "public generic beta demo with local RAW upload only",
+  "public_repo_rules": [
+    "no candidate RAW",
+    "no source CV",
+    "no backups",
+    "no candidate exports",
+    "local RAW upload only"
+  ],
+  "modes": [
+    "discovery",
+    "raw_only_local",
+    "pro_candidate"
+  ],
+  "fixes": [
+    "raw uploaded without CV is no longer treated as pure discovery",
+    "serious exports blocked until CV source is loaded",
+    "operator build button removed from public flow"
+  ]
+}

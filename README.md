@@ -1,20 +1,25 @@
-# TalentBusterZ — User Template v0.8 reference
+# TalentBusterZ — Betatest public v0.8.1
 
-Backup de référence pour créer les prochains profils candidats.
+Démonstrateur public générique TalentBusterZ pour tests bêta.
 
 ## Principe
-Ce template harmonise tous les futurs profils : Bruno, Nico, Bérénice, Anthony, etc.
+
+Ce repo ne doit contenir aucune donnée candidat : pas de CV source, pas de RAW candidat détaillé, pas de backup, pas d’export et pas de coordonnées.
+
+Les bêta-testeurs utilisent le site en chargeant localement leur fichier RAW envoyé séparément par Grégory. Le RAW est lu dans le navigateur et reste un fichier personnel portable.
 
 ## Modes
-1. Découverte sans CV : curiosité, RAW démo progressif, pas de CV final.
-2. Build opérateur : l’opérateur prépare un profil anonymisé en phase test.
-3. Mode pro candidat : CV source + dernier RAW connu.
+
+- Découverte sans CV : curiosité, score prudent, RAW démo progressif, pas de CV final.
+- RAW local chargé : analyse possible avec mémoire locale, confiance moyenne, CV final bloqué tant que le CV source n’est pas chargé.
+- Mode pro candidat : CV source + dernier RAW connu, livrables sérieux autorisés.
 
 ## Sécurité provisoire
-Tant que les briques sécurité/RGPD ne sont pas en place, l’opérateur garantit l’anonymisation. Ne jamais publier de CV source réel ni données nominatives dans le repo.
 
-## À remplacer pour chaque candidat
-- CNAME
-- data/user_config.json
-- data/profile_seed.json
-- data/raw_profile_template.json ou raw_profile_<user>_initial_anonymized.json
+Tant que les briques sécurité/RGPD ne sont pas finalisées :
+
+- ne pas publier de CV source réel ;
+- ne pas publier de RAW candidat détaillé ;
+- ne pas publier de coordonnées, nom complet, adresse, téléphone, email ;
+- conserver les sources réelles hors GitHub ;
+- envoyer les RAW aux personnes concernées par canal contrôlé.

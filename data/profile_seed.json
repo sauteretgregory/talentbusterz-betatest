@@ -1,10 +1,10 @@
 {
-  "profile_id": "NEW_USER",
-  "display_name": "Profil à initialiser",
+  "profile_id": "BETATEST",
+  "display_name": "Démonstrateur public",
   "status": "empty_reference_template",
-  "headline": "Positionnement à initialiser",
-  "summary_public": "Aucun parcours n’est prérempli. Ce template sert à créer un profil candidat harmonisé après anonymisation opérateur.",
+  "headline": "Espace de test générique — chargez votre RAW local",
+  "summary_public": "Aucun parcours candidat n’est hébergé dans ce repo. Pour reprendre un profil, chargez le fichier RAW envoyé séparément.",
   "job_families": [],
   "public_proofs": [],
-  "anonymization_notice": "Phase test : ne pas publier de CV source réel, coordonnées, nom complet ou RAW nominatif tant que les briques sécurité/RGPD ne sont pas en place."
+  "anonymization_notice": "Phase test : aucune donnée candidat n’est publiée dans GitHub. Le RAW est chargé localement dans le navigateur."
 }
