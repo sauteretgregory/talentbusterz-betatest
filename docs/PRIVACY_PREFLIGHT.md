@@ -1,6 +1,6 @@
 # Privacy preflight
 
-Avant push GitHub, vérifier qu'il n'y a aucune donnée réelle.
+Avant push GitHub, vérifier qu’il n’y a aucune donnée réelle.
 
 Commandes utiles :
 
@@ -9,9 +9,4 @@ grep -RniE "REAL_CANDIDATE_NAME|REAL_CLIENT_NAME|REAL_PROJECT_NAME|REAL_COMPANY_
 grep -RniE "private profile|confidential|sensitive|real raw|real cv" .
 ```
 
-Seuls les exemples fictifs sont autorisés :
-- Profil Démo
-- Entreprise Démo
-- Client Démo
-- Projet RCU fictif
-- volume fictif
+Le repo ne doit contenir que des exemples fictifs.

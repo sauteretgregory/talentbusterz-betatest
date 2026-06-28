@@ -1,0 +1,21 @@
+{
+  "repo": "talentbusterz_betatest_v0_8_4_hotfix_step2_rawresolver_trace",
+  "patch": "step2_rawresolver_trace",
+  "goals": [
+    "Lire correctement les RAW V0.7 avec validated_core/proofs/experiences/skills/tools/watch_points",
+    "Conserver tous les échanges, questions, réponses, commentaires et score dans le RAW enrichi",
+    "Préparer les données pour une future IA connectée au produit final",
+    "Conserver la règle step1 : RAW seul = livrables de travail autorisés"
+  ],
+  "runtime_files_rewritten": [
+    "assets/app.js",
+    "index.html"
+  ],
+  "acceptance": [
+    "L'offre collée reste l'offre active runtime",
+    "La preuve active est résolue depuis le RAW si possible",
+    "Le RAW actualisé contient _tbz_trace.sessions[].interactions[]",
+    "Chaque interaction contient question_prompt, user_answer_raw, user_comment_on_question, scores et preuves",
+    "Les livrables restent générables sans CV source"
+  ]
+}
