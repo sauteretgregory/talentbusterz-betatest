@@ -1,0 +1,10 @@
+{
+  "template_version": "0.8-reference",
+  "created_at": "2026-06-28",
+  "purpose": "reference backup for future candidate creation",
+  "modes": [
+    "discovery",
+    "operator_build",
+    "pro_candidate"
+  ]
+}

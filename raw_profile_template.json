@@ -1,0 +1,26 @@
+{
+  "schema_version": "TBZ_RAW_STATIC_V0_8",
+  "profile_id": "NEW_USER",
+  "display_name": "Profil à initialiser",
+  "privacy_mode": "operator_anonymization_required",
+  "memory_role": "Base de données locale provisoire + mémoire IA statique",
+  "created_at": "",
+  "last_updated_at": "",
+  "source_cv": null,
+  "validated_core": {
+    "summary": "",
+    "proofs": []
+  },
+  "skills": {},
+  "experiences": [],
+  "user_memory": [],
+  "cv_usage_log": [],
+  "offer_history": [],
+  "deleted_from_raw": [],
+  "version_history": [
+    {
+      "version": "0.8-reference",
+      "event": "reference_template_created"
+    }
+  ]
+}

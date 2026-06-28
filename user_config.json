@@ -1,0 +1,15 @@
+{
+  "tbz_template_version": "STATIC_USER_TEMPLATE_V0_8_REFERENCE",
+  "profile_id": "NEW_USER",
+  "display_name": "Profil à initialiser",
+  "subdomain": "to-replace.talentbusterz.com",
+  "modes": [
+    "discovery",
+    "operator_build",
+    "pro_candidate"
+  ],
+  "operator_anonymization_required": true,
+  "publish_source_cv": false,
+  "publish_full_raw": false,
+  "notes": "Template provisoire tant que les briques sécurité/RGPD ne sont pas en place."
+}
