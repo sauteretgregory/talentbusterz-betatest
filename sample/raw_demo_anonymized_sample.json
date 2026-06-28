@@ -1,7 +1,7 @@
 {
   "raw_schema": {
-    "name": "TalentBusterZ RAW fictif GitHub-safe hotfix",
-    "version": "0.8.4-hotfix-sample",
+    "name": "TalentBusterZ RAW fictif GitHub-safe",
+    "version": "0.8.4-hotfix-step1-sample",
     "mode": "local_static_demo",
     "privacy": "fictional_sample_only"
   },
@@ -11,31 +11,30 @@
     "positioning": [
       "Chef de projet IT senior",
       "AMOA CRM/Data",
-      "Data/BI Luxe-Retail",
+      "Data/BI",
       "Coordination métier/IT"
     ]
   },
   "evidence_library": [
     {
-      "evidence_id": "demo_rcu_luxe",
-      "label": "Projet RCU fictif — CRM/Data retail omnicanal",
-      "context": "Référentiel client unique fictif dans un environnement luxe/retail de démonstration.",
+      "evidence_id": "demo_rcu_project",
+      "label": "Projet RCU fictif — CRM/Data omnicanal",
+      "context": "Référentiel client unique fictif dans un environnement de démonstration.",
       "signals": [
-        "Luxe",
-        "Retail",
         "CRM",
         "Data",
         "BI",
         "RGPD",
-        "AMOA"
+        "AMOA",
+        "coordination"
       ],
       "numbers": {
-        "clients": "volume fictif à remplacer par donnée validée utilisateur",
-        "anonymized_clients": "volume fictif à remplacer par donnée validée utilisateur",
-        "users": "volume fictif à remplacer par donnée validée utilisateur",
-        "contributors": "périmètre fictif à remplacer par donnée validée utilisateur"
+        "clients": "volume fictif",
+        "anonymized_clients": "volume fictif",
+        "users": "volume fictif",
+        "contributors": "périmètre fictif"
       },
-      "usage_status": "démonstration uniquement — ne pas utiliser comme preuve réelle"
+      "usage_status": "démonstration uniquement"
     }
   ],
   "_tbz_trace": {

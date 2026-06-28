@@ -3,30 +3,103 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TalentBusterZ — V0.8.4 hotfix</title>
+  <title>TalentBusterZ — V0.8.4 hotfix step 1</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <header class="hero">
     <div>
-      <p class="eyebrow">Prototype statique local • V0.8.4 hotfix</p>
-      <h1>TalentBusterZ — RAW-first working mode</h1>
-      <p>CV augmenté, matching offre/profil, entretien de clarification et livrables de travail.</p>
+      <p class="eyebrow">Prototype non indexé • aucune donnée candidat hébergée • Betatest V0.8.4 hotfix step 1</p>
+      <h1>TalentBusterZ — espace de test local</h1>
+      <p>Cette page est une coquille publique. Le profil n’existe que dans le fichier RAW chargé depuis l’ordinateur de l’utilisateur.</p>
     </div>
-    <div class="badge">Aucune donnée envoyée au site</div>
+    <div class="badge">RAW-first working mode</div>
   </header>
+
   <main>
-    <section class="notice warning"><strong>Règle centrale V0.8.2 :</strong> un RAW chargé permet l'analyse, les questions et les livrables de travail. Le CV source est optionnel en local et ne bloque que le pack final source-vérifié. L'utilisateur final reste responsable des informations transmises.</section>
-    <section class="grid">
-      <div class="card"><h2>1. Entrées</h2><label>CV source actuel <small>optionnel — non requis pour les livrables de travail</small></label><input id="cvFile" type="file" accept=".pdf,.doc,.docx"><label>RAW TalentBusterZ connu</label><input id="rawFile" type="file" accept=".json"><button id="initRawBtn" class="secondary">Initialiser un RAW démo anonymisé</button><div id="rawStatus" class="status neutral">Aucun RAW chargé.</div></div>
-      <div class="card"><h2>2. Statut de continuité</h2><div id="gateStatus" class="status warning">Mode découverte : chargez un RAW ou initialisez une mémoire locale anonymisée.</div></div>
+    <section class="notice success">
+      <strong>Règle centrale :</strong> RAW seul = livrables de travail autorisés. CV source + RAW = pack final source-vérifié.
     </section>
-    <section class="card"><h2>3. Offre à analyser</h2><textarea id="offerText" rows="12" placeholder="Collez ici l'offre LinkedIn ou le texte de poste..."></textarea><button id="analyzeBtn">Analyser l'offre</button><div id="analysisOutput" class="analysis"></div></section>
-    <section class="card"><h2>4. Entretien de clarification</h2><div id="questionEngine" class="question-box"><p>Le Question Engine s'activera après analyse d'une offre avec RAW chargé.</p></div></section>
-    <section class="card"><h2>5. Exports & mémoire locale</h2><p class="muted">En mode projet, chaque livrable est accompagné d'un RAW actualisé ou d'un manifeste RAW inchangé.</p><button id="generateBtn" disabled>Générer les livrables</button><div class="button-row"><button id="downloadCvBtn" disabled>CV Word de travail + RAW</button><button id="downloadScoringBtn" disabled>Note / scoring + RAW</button><button id="downloadStrengthsBtn" disabled>Points forts / axes + RAW</button><button id="downloadRtouBtn" disabled>RTOU + RAW</button><button id="downloadRawBtn" disabled>RAW actualisé seul</button></div><div id="exportStatus" class="status neutral">Aucun livrable généré.</div></section>
-    <section class="card"><h2>6. Aperçu CV de travail</h2><div id="cvPreview" class="preview">Aucun CV généré.</div></section>
+
+    <section class="tabs">
+      <span>Profil</span>
+      <span>Modes & Data Gate</span>
+      <span>Matching</span>
+      <span>Assistant</span>
+      <span>Exports & mémoire</span>
+      <span>Méthode</span>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>1. Reprendre ou créer un profil local</h2>
+
+        <label>CV source actuel <small>optionnel pour les livrables de travail ; requis seulement pour le pack final source-vérifié</small></label>
+        <input id="cvFile" type="file" accept=".pdf,.doc,.docx">
+
+        <label>Dernier RAW TalentBusterZ connu <small>fichier JSON de mémoire locale</small></label>
+        <input id="rawFile" type="file" accept=".json">
+
+        <button id="initRawBtn" class="secondary">Initialiser une mémoire locale fictive</button>
+        <div id="rawStatus" class="status neutral">Aucun RAW chargé.</div>
+      </div>
+
+      <div class="card">
+        <h2>2. Statut de continuité</h2>
+        <div id="gateStatus" class="status warning">
+          Chargez un RAW ou initialisez une mémoire locale fictive.
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. Démo statique — lecture d’une fiche de poste</h2>
+      <p class="muted">Collez une offre. Le score combine l’alignement estimé et les réponses ajoutées au RAW local.</p>
+      <textarea id="offerText" rows="12" placeholder="Collez ici l'offre à analyser..."></textarea>
+      <button id="analyzeBtn">Analyser l’offre</button>
+      <button id="demoOfferBtn" class="secondary">Insérer une offre démo Data/BI</button>
+      <div id="analysisOutput" class="analysis"></div>
+    </section>
+
+    <section class="card">
+      <h2>4. Assistant d’enrichissement</h2>
+      <p class="muted">Chaque réponse valide est enregistrée dans le RAW local, fait avancer la question et ajuste le score avec explication.</p>
+      <div id="questionEngine" class="question-box">
+        <p>Le Question Engine s’activera après analyse d’une offre avec RAW chargé.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>5. Exports & mémoire locale</h2>
+
+      <div id="exportsGate" class="status warning">
+        Chargez un RAW et analysez une offre pour générer les livrables de travail.
+      </div>
+
+      <button id="generateBtn" disabled>Générer les livrables de travail</button>
+
+      <div class="button-row">
+        <button id="downloadCvBtn" disabled>Télécharger CV Word + RAW</button>
+        <button id="downloadScoringBtn" disabled>Télécharger Note/scoring + RAW</button>
+        <button id="downloadStrengthsBtn" disabled>Télécharger Points forts / axes + RAW</button>
+        <button id="downloadRtouBtn" disabled>Télécharger RTOU + RAW</button>
+        <button id="downloadRawBtn" disabled>Télécharger RAW actualisé</button>
+        <button id="downloadSourcePackBtn" disabled>Pack final source-vérifié</button>
+      </div>
+
+      <div id="exportStatus" class="status neutral">Aucun livrable généré.</div>
+    </section>
+
+    <section class="card">
+      <h2>6. CV candidat</h2>
+      <div id="cvPreview" class="preview">Aucun CV généré.</div>
+    </section>
   </main>
-  <footer>TalentBusterZ V0.8.4 hotfix — Prototype local. Ne pas publier de CV réel ou de coordonnées dans GitHub.</footer>
+
+  <footer>
+    TalentBusterZ V0.8.4 hotfix step 1 — Prototype local GitHub-safe.
+  </footer>
+
   <script src="assets/app.js"></script>
 </body>
 </html>

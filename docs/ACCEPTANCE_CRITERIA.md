@@ -1,43 +1,23 @@
-# Critères d'acceptation V0.8.4 hotfix GitHub-safe
+# Critères d'acceptation — étape 1 Data Gate
 
-## Test RAW-only
+## Test principal
 
-1. Charger un RAW local anonymisé ou le RAW démo fictif.
+1. Charger un RAW.
 2. Coller une offre.
-3. L'analyse doit être autorisée.
-4. Le Question Engine doit s'enchaîner Q1 → Q2 → Q3 → Q4.
-5. Les changements de score doivent être expliqués.
-6. L'utilisateur doit pouvoir contester une question, une lecture ou un score.
-7. Cliquer sur **Générer les livrables**.
-8. Obtenir :
-   - CV Word de travail + RAW actualisé
-   - Note / scoring TalentBusterZ + RAW actualisé
-   - Points forts / axes d'amélioration + RAW actualisé
-   - RTOU + RAW actualisé
-9. Le CV de travail doit être généré même sans CV source.
-10. Le pack final source-vérifié peut être désactivé sans bloquer les livrables de travail.
-11. Aucune modale ne doit dire “CV bloqué” ou “chargez le CV source pour générer”.
+3. Ne pas charger de CV source.
+4. Cliquer sur Analyser l’offre.
+5. Le bouton **Générer les livrables de travail** doit être actif.
+6. Le statut doit dire que les livrables de travail sont autorisés.
+7. Le pack final source-vérifié doit rester désactivé.
+8. Cliquer sur **Générer les livrables de travail**.
+9. L'aperçu CV doit apparaître.
+10. Les boutons suivants doivent être actifs :
+   - Télécharger CV Word + RAW
+   - Télécharger Note/scoring + RAW
+   - Télécharger Points forts / axes + RAW
+   - Télécharger RTOU + RAW
+   - Télécharger RAW actualisé
 
-## Test confidentialité repo
+## Test confidentialité
 
-Le repo ne doit contenir aucune donnée personnelle ou client réelle.
-
-Interdits dans le code, les samples et la documentation :
-- noms de candidats réels ;
-- noms de clients réels issus de tests privés ;
-- métriques réelles ;
-- emails ;
-- téléphones ;
-- adresses ;
-- CV sources ;
-- captures LinkedIn personnelles ;
-- RAW réels.
-
-## Test même RAW
-
-Si le même RAW est rechargé :
-
-- afficher “RAW déjà chargé — aucune nouvelle donnée détectée” ;
-- ne pas dupliquer les données ;
-- permettre la continuation de session ;
-- générer un manifeste RAW inchangé si un livrable est produit sans nouvelle donnée.
+Le repo ne doit contenir aucun nom réel de candidat, client de test privé, métrique réelle ou capture issue d'un vrai test.

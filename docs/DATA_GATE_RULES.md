@@ -1,28 +1,40 @@
-# Data Gate V0.8.2
+# Data Gate — V0.8.4 hotfix step 1
 
 ## Règle centrale
 
-RAW chargé = session exploitable.
+RAW seul = livrables de travail autorisés.
 
-Le CV source ne conditionne pas la génération de travail.
+Le CV source ne conditionne pas :
+- l'analyse ;
+- les questions ;
+- le score ;
+- le CV Word de travail ;
+- la note/scoring ;
+- les points forts / axes d’amélioration ;
+- le RTOU ;
+- le RAW actualisé.
 
-## États
+Le CV source conditionne uniquement :
+- le pack final source-vérifié.
 
-### Aucun RAW, aucun CV
-Mode découverte limité. Analyse démo possible si offre collée. RAW démo progressif possible.
+## Matrice
 
-### RAW chargé, CV absent
-Analyse personnalisée active. Question Engine actif. CV de travail autorisé. Note/scoring autorisé. Points forts / axes d'amélioration autorisés. RTOU autorisé. RAW actualisé autorisé. Pack final source-vérifié indisponible.
+| Élément | RAW seul | CV source + RAW |
+|---|---:|---:|
+| Analyse offre | Oui | Oui |
+| Questions | Oui | Oui |
+| Score | Oui | Oui |
+| CV Word de travail | Oui | Oui |
+| Note/scoring | Oui | Oui |
+| Points forts / axes | Oui | Oui |
+| RTOU | Oui | Oui |
+| RAW actualisé | Oui | Oui |
+| Pack final source-vérifié | Non | Oui |
 
-### RAW chargé + CV source
-Tous les livrables de travail sont autorisés. Pack final source-vérifié autorisé.
+## Message attendu en RAW seul
 
-## Message UX attendu
+RAW local chargé : mémoire TalentBusterZ active.
 
-RAW local chargé — continuité active.
+Analyse, enrichissement, CV de travail, note/scoring, points forts, axes d’amélioration, RTOU et RAW actualisé sont autorisés.
 
-Vous pouvez analyser l'offre, répondre aux questions, générer un CV Word de travail, une note TalentBusterZ, les points forts / axes d'amélioration, un RTOU et un RAW actualisé.
-
-Le CV source n'est pas chargé : seul le pack final vérifié contre CV source est indisponible.
-
-Prototype statique : l'utilisateur final reste responsable des informations transmises. Ne chargez pas de CV réel, données sensibles ou informations confidentielles tant que la sécurité/RGPD n'est pas finalisée.
+Le CV source n’est pas chargé : seul le pack final source-vérifié reste indisponible.

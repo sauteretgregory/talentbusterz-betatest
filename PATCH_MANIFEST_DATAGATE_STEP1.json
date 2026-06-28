@@ -1,0 +1,16 @@
+{
+  "repo": "talentbusterz_betatest_v0_8_4_hotfix_step1_datagate",
+  "patch": "step1_datagate",
+  "goal": "RAW seul = livrables de travail autorisés ; CV source requis uniquement pour le pack final source-vérifié.",
+  "runtime_files_rewritten": [
+    "index.html",
+    "assets/app.js",
+    "assets/styles.css"
+  ],
+  "acceptance": [
+    "RAW chargé + offre analysée + CV source absent => Générer les livrables de travail actif",
+    "Aperçu CV généré après clic",
+    "Exports CV Word + RAW, scoring + RAW, points/axes + RAW, RTOU + RAW disponibles",
+    "Pack final source-vérifié désactivé sans CV source"
+  ]
+}

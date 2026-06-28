@@ -1,26 +1,17 @@
-# Privacy preflight before GitHub push
+# Privacy preflight
 
-Before pushing the repo, search for private data.
+Avant push GitHub, vérifier qu'il n'y a aucune donnée réelle.
 
-Recommended checks:
+Commandes utiles :
 
 ```bash
 grep -RniE "REAL_CANDIDATE_NAME|REAL_CLIENT_NAME|REAL_PROJECT_NAME|REAL_COMPANY_NAME|@[a-zA-Z0-9.-]+|0[1-9][0-9 .-]{8,}" .
-grep -RniE "real client|real candidate|private profile|confidential|sensitive" .
+grep -RniE "private profile|confidential|sensitive|real raw|real cv" .
 ```
 
-Allowed examples must stay fictional:
+Seuls les exemples fictifs sont autorisés :
 - Profil Démo
-- Client Luxe Démo
+- Entreprise Démo
+- Client Démo
 - Projet RCU fictif
 - volume fictif
-- périmètre fictif
-
-Never commit:
-- real CV
-- real RAW
-- real screenshots from LinkedIn
-- candidate identity
-- client identity from a private profile
-- real project metrics
-- real personal contact details
