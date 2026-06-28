@@ -1,0 +1,16 @@
+{
+  "repo": "talentbusterz_betatest_v0_8_4_hotfix_step4_score_governance",
+  "patch": "step4_score_governance",
+  "goals": [
+    "Empêcher le score 100 avant l’audit final",
+    "Plafonner Q1/Q2/Q3 à 99",
+    "Tracer le gain proposé et le gain réellement obtenu",
+    "Expliquer au feedback quand un plafond est appliqué"
+  ],
+  "acceptance": [
+    "Q3 avec score 98 et gain proposé +2 doit produire 99, pas 100",
+    "Le feedback mentionne que le score 100 est réservé à l’audit final",
+    "Le RAW contient score_gain_proposed, score_gain_obtained, score_ceiling, score_ceiling_applied",
+    "Q4 reste utile et peut traiter les derniers points de prudence"
+  ]
+}

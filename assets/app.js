@@ -1,5 +1,5 @@
 /* TalentBusterZ V0.8.4 hotfix step 2 — RAW Resolver + Trace IA future */
-const TBZ_VERSION = "0.8.4-hotfix-step3-activeevidence-state";
+const TBZ_VERSION = "0.8.4-hotfix-step4-score-governance";
 
 const state = {
   raw: null,
@@ -578,6 +578,31 @@ function summarizeAnswer(answer) {
 }
 
 
+
+function scoreCeilingForQuestion(questionIndex) {
+  const isBeforeFinalAudit = questionIndex < questions.length - 1;
+  return isBeforeFinalAudit ? 99 : 100;
+}
+
+function applyScoreCeiling(before, proposedGain, questionIndex) {
+  const ceiling = scoreCeilingForQuestion(questionIndex);
+  const proposedAfter = Math.min(100, before + proposedGain);
+  const after = Math.min(ceiling, proposedAfter);
+  const obtainedGain = Math.max(0, after - before);
+  const ceilingApplied = proposedAfter > ceiling;
+
+  return {
+    score_ceiling: ceiling,
+    score_ceiling_applied: ceilingApplied,
+    score_ceiling_reason: ceilingApplied
+      ? "Score 100 réservé à l’audit final après traitement des points de prudence."
+      : "Aucun plafond de score appliqué pour cette réponse.",
+    proposed_after: proposedAfter,
+    after,
+    obtained_gain: obtainedGain
+  };
+}
+
 function detectEvidenceCorrection(answer, comment, questionIndex) {
   if (questionIndex !== 0) return null;
 
@@ -752,8 +777,10 @@ function submitAnswer() {
   const correction = detectEvidenceCorrection(answer, comment, state.questionIndex);
   const correctedEvidence = buildCorrectedEvidence(correction, answer, comment, evidenceBefore);
   const gainDecision = scoreGainWithEvidenceCorrection(question, answer, correction);
-  const gain = gainDecision.gain;
-  const after = Math.min(100, before + gain);
+  const proposedGain = gainDecision.gain;
+  const ceilingDecision = applyScoreCeiling(before, proposedGain, state.questionIndex);
+  const gain = ceilingDecision.obtained_gain;
+  const after = ceilingDecision.after;
   const understood = summarizeAnswer(answer);
 
   if (correctedEvidence) {
@@ -796,10 +823,15 @@ function submitAnswer() {
         : question.missing
     },
     score_before: before,
+    score_gain_proposed: proposedGain,
     score_gain_obtained: gain,
     score_gain_potential: question.maxGain,
     score_gain_reason: gainDecision.reason,
     score_non_max_reason: gainDecision.maxReason,
+    score_ceiling: ceilingDecision.score_ceiling,
+    score_ceiling_applied: ceilingDecision.score_ceiling_applied,
+    score_ceiling_reason: ceilingDecision.score_ceiling_reason,
+    score_proposed_after_without_ceiling: ceilingDecision.proposed_after,
     score_after: after,
     user_can_dispute: true,
     usage_decision: {
@@ -818,7 +850,11 @@ function submitAnswer() {
     from: before,
     to: after,
     delta: gain,
-    reason: `Réponse Q${state.questionIndex + 1}`,
+    proposed_delta: proposedGain,
+    ceiling_applied: ceilingDecision.score_ceiling_applied,
+    reason: ceilingDecision.score_ceiling_applied
+      ? `Réponse Q${state.questionIndex + 1} — gain plafonné avant audit final`
+      : `Réponse Q${state.questionIndex + 1}`,
     interaction_ref: record.question_title
   });
 
@@ -833,9 +869,10 @@ function submitAnswer() {
       ${correctionFeedback}
       <p><strong>Ce qui est solide :</strong> ${question.appreciated.map(escapeHtml).join(", ")}.</p>
       <p><strong>Ce qui manque pour le maximum :</strong> ${record.assistant_interpretation.missing_for_max_score.map(escapeHtml).join(", ")}.</p>
-      <p><strong>Score :</strong> ${before} → ${after} &nbsp; | &nbsp; Gain obtenu : +${gain} / +${question.maxGain}</p>
+      <p><strong>Score :</strong> ${before} → ${after} &nbsp; | &nbsp; Gain obtenu : +${gain} / +${question.maxGain}${ceilingDecision.score_ceiling_applied ? `, gain proposé initialement +${proposedGain}` : ""}</p>
       <p><strong>Pourquoi :</strong> ${escapeHtml(gainDecision.reason)}</p>
-      <p><strong>Pourquoi pas forcément le maximum :</strong> ${escapeHtml(gainDecision.maxReason)}</p>
+      <p><strong>Gouvernance du score :</strong> ${escapeHtml(ceilingDecision.score_ceiling_reason)}</p>
+      <p><strong>Pourquoi pas forcément le maximum :</strong> ${escapeHtml(ceilingDecision.score_ceiling_applied ? "Le score 100 est réservé à l’audit final : les derniers points de prudence doivent encore être traités." : gainDecision.maxReason)}</p>
       <div class="notice warning">
         Si cette lecture est inexacte, trop prudente ou trop généreuse, corrigez-la avant génération du CV. Votre commentaire sera conservé dans le RAW.
       </div>
@@ -934,6 +971,8 @@ ${selectEvidenceForOffer(state.rawResolution, state.activeOffer).alternatives.ma
 
 ${state.answers.map((answer) => `### ${answer.question_title}
 Score : ${answer.score_before} → ${answer.score_after} (+${answer.score_gain_obtained}/${answer.score_gain_potential})
+Gain proposé : +${answer.score_gain_proposed ?? answer.score_gain_obtained}
+Plafond appliqué : ${answer.score_ceiling_applied ? "oui" : "non"} ${answer.score_ceiling_applied ? `(plafond ${answer.score_ceiling})` : ""}
 
 Ce que TBZ a compris : ${answer.assistant_interpretation.understood.join(", ")}
 Ce qui est fort : ${answer.assistant_interpretation.appreciated_signals.join(", ")}
@@ -1007,6 +1046,9 @@ ${answer.assistant_interpretation.understood.join(", ")}
 
 Score :
 ${answer.score_before} → ${answer.score_after}
+Gain proposé : +${answer.score_gain_proposed ?? answer.score_gain_obtained}
+Gain obtenu : +${answer.score_gain_obtained}
+Plafond appliqué : ${answer.score_ceiling_applied ? "oui" : "non"}
 `).join("\n")}
 
 ## Règle de conservation

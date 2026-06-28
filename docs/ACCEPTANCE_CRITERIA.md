@@ -1,33 +1,30 @@
-# Critères d’acceptation — étape 3 Active Evidence State
+# Critères d’acceptation — étape 4 Score Governance
 
-## Test Q1 correction de preuve
+## Test Q3
 
-1. Charger un RAW V0.7.
-2. Coller une offre réelle.
-3. Analyser l’offre.
-4. Q1 propose une preuve active.
-5. Dans la réponse Q1, corriger la preuve principale.
-6. Après validation :
-   - le feedback doit dire que la correction de preuve a été intégrée ;
-   - le score ne doit pas donner un maximum automatique si la preuve proposée était corrigée ;
-   - Q2 doit afficher la preuve corrigée, pas l’ancienne preuve.
+1. Charger un RAW.
+2. Analyser une offre.
+3. Répondre à Q1 en corrigeant la preuve.
+4. Répondre à Q2.
+5. Répondre à Q3 avec des chiffres solides.
+6. Résultat attendu :
+   - si le score avant Q3 est 98, le score après Q3 doit être 99, pas 100 ;
+   - le feedback doit expliquer que le 100 est réservé à l’audit final ;
+   - Q4 doit rester utile.
 
-## Test trace RAW
+## Test Q4
 
-Après génération des livrables, le RAW actualisé doit contenir :
-
-- `active_evidence_before`
-- `active_evidence_after`
-- `evidence_correction`
-- `secondary_evidence`
-- `user_answer_raw`
-- `user_comment_on_question`
-- `score_gain_obtained`
-- `score_gain_potential`
+Le score 100 peut être atteint seulement si la réponse finale traite les points de prudence :
+- BI/Data Viz hands-on ;
+- budget ;
+- management non hiérarchique ;
+- anglais ;
+- formulation prudente CV/entretien.
 
 ## Tests conservés
 
 - RAW seul = livrables de travail autorisés.
 - L’offre collée reste l’offre active.
 - Le RAW Resolver lit `validated_core`, `experiences`, `skills`, `tools`, `watch_points`.
+- Q2 utilise la preuve active corrigée après Q1.
 - Chaque livrable est accompagné d’un RAW actualisé.
