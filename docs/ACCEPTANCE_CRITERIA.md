@@ -1,37 +1,33 @@
-# Critères d’acceptation — étape 2 RAW Resolver + Trace
+# Critères d’acceptation — étape 3 Active Evidence State
 
-## Test avec RAW V0.7
+## Test Q1 correction de preuve
 
-1. Charger un RAW V0.7 contenant `validated_core`, `experiences`, `skills`, `tools`.
-2. Coller une vraie offre.
-3. L’offre active affichée doit reprendre l’entreprise et le titre extraits du texte collé.
-4. La preuve active ne doit plus rester “Preuve principale à clarifier” si le RAW contient des preuves.
-5. TBZ doit afficher au moins une preuve candidate issue du RAW.
-6. La question 1 doit rappeler :
-   - l’offre active ;
-   - les signaux détectés dans l’offre ;
-   - les preuves candidates issues du RAW.
+1. Charger un RAW V0.7.
+2. Coller une offre réelle.
+3. Analyser l’offre.
+4. Q1 propose une preuve active.
+5. Dans la réponse Q1, corriger la preuve principale.
+6. Après validation :
+   - le feedback doit dire que la correction de preuve a été intégrée ;
+   - le score ne doit pas donner un maximum automatique si la preuve proposée était corrigée ;
+   - Q2 doit afficher la preuve corrigée, pas l’ancienne preuve.
 
-## Test conservation échanges
+## Test trace RAW
 
-1. Répondre à une question.
-2. Ajouter un commentaire sur la question.
-3. Générer les livrables de travail.
-4. Télécharger le RAW actualisé.
-5. Vérifier que le RAW contient :
-   - question posée ;
-   - réponse brute ;
-   - commentaire utilisateur ;
-   - score avant/après ;
-   - preuve active ;
-   - preuves candidates ;
-   - interprétation assistant ;
-   - décision d’usage.
+Après génération des livrables, le RAW actualisé doit contenir :
 
-## Test Data Gate conservé
+- `active_evidence_before`
+- `active_evidence_after`
+- `evidence_correction`
+- `secondary_evidence`
+- `user_answer_raw`
+- `user_comment_on_question`
+- `score_gain_obtained`
+- `score_gain_potential`
 
-RAW seul + offre analysée doit toujours autoriser :
-- CV Word + RAW ;
-- note/scoring + RAW ;
-- points/axes + RAW ;
-- RTOU + RAW.
+## Tests conservés
+
+- RAW seul = livrables de travail autorisés.
+- L’offre collée reste l’offre active.
+- Le RAW Resolver lit `validated_core`, `experiences`, `skills`, `tools`, `watch_points`.
+- Chaque livrable est accompagné d’un RAW actualisé.

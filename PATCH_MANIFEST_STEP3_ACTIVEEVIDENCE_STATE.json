@@ -1,0 +1,16 @@
+{
+  "repo": "talentbusterz_betatest_v0_8_4_hotfix_step3_activeevidence_state",
+  "patch": "step3_activeevidence_state",
+  "goals": [
+    "Mettre à jour state.activeEvidence quand l’utilisateur corrige la preuve en Q1",
+    "Conserver l’ancienne preuve comme secondaryEvidence",
+    "Plafonner/justifier le score si la preuve proposée par TBZ était mal hiérarchisée",
+    "Tracer active_evidence_before/after et evidence_correction dans le RAW"
+  ],
+  "acceptance": [
+    "Après correction en Q1, Q2 affiche la preuve corrigée",
+    "Le feedback mentionne que la correction de preuve est intégrée",
+    "Le score n’accorde pas automatiquement +3/3 si la correction révèle une erreur de hiérarchie",
+    "Le RAW actualisé contient active_evidence_before, active_evidence_after, evidence_correction, secondary_evidence"
+  ]
+}

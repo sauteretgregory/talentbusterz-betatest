@@ -1,5 +1,5 @@
 /* TalentBusterZ V0.8.4 hotfix step 2 — RAW Resolver + Trace IA future */
-const TBZ_VERSION = "0.8.4-hotfix-step2-rawresolver-trace";
+const TBZ_VERSION = "0.8.4-hotfix-step3-activeevidence-state";
 
 const state = {
   raw: null,
@@ -10,6 +10,7 @@ const state = {
   activeOffer: null,
   rawResolution: null,
   activeEvidence: null,
+  secondaryEvidence: null,
   answers: [],
   score: null,
   scoreHistory: [],
@@ -533,7 +534,14 @@ Répondez avec :
   }
 
   if (questionIndex === 1) {
-    return `Sur la preuve validée pour ${offer.display_title}, quel a été votre rôle personnel exact : cadrage, AMOA, pilotage, coordination, recette, budget, formation ?
+    const secondaryLine = state.secondaryEvidence
+      ? `\nPreuve secondaire conservée : ${state.secondaryEvidence.label}\n`
+      : "";
+
+    return `Sur la preuve active validée pour ${offer.display_title} :
+« ${state.activeEvidence.label} »
+${secondaryLine}
+Quel a été votre rôle personnel exact : cadrage, AMOA, pilotage, coordination, recette, budget, formation ?
 
 Dites ce que vous assumez, ce que vous avez seulement coordonné, et ce qu’il ne faut pas écrire comme responsabilité directe.`;
   }
@@ -567,6 +575,114 @@ function summarizeAnswer(answer) {
   if (lower.includes("budget")) signals.push("budget cadré");
   if (lower.includes("sans sur-vendre") || lower.includes("ne revendique pas")) signals.push("prudence anti-survente");
   return signals.length ? signals : ["réponse exploitable à clarifier"];
+}
+
+
+function detectEvidenceCorrection(answer, comment, questionIndex) {
+  if (questionIndex !== 0) return null;
+
+  const combined = `${answer || ""}\n${comment || ""}`.toLowerCase();
+
+  const correctionMarkers = [
+    "je corrige",
+    "corrige",
+    "preuve principale",
+    "preuve active",
+    "plutôt",
+    "plutot",
+    "n’est pas",
+    "n'est pas",
+    "pas l’expérience",
+    "pas l'experience",
+    "secondaire",
+    "à prioriser",
+    "a prioriser",
+    "complété par",
+    "complete par",
+    "complétée par",
+    "preuve secondaire"
+  ];
+
+  const domainMarkers = [
+    "it crm",
+    "crm",
+    "rcu",
+    "référentiel",
+    "referentiel",
+    "luxe",
+    "retail",
+    "luxe-retail",
+    "luxe retail",
+    "gcp",
+    "salesforce",
+    "clienteling",
+    "data",
+    "bi"
+  ];
+
+  const hasCorrectionMarker = correctionMarkers.some((marker) => combined.includes(marker));
+  const domainHits = domainMarkers.filter((marker) => combined.includes(marker));
+
+  if (!hasCorrectionMarker && domainHits.length < 3) return null;
+
+  let label = "Preuve corrigée par l’utilisateur — projet CRM/Data à prioriser";
+
+  if ((combined.includes("it crm") || combined.includes("crm")) && combined.includes("rcu") && (combined.includes("luxe") || combined.includes("retail"))) {
+    label = "IT CRM Project Manager — RCU / CRM / Data luxe-retail récent";
+  } else if (combined.includes("rcu")) {
+    label = "Projet RCU / CRM / Data corrigé par l’utilisateur";
+  } else if (combined.includes("data") && combined.includes("bi")) {
+    label = "Projet Data/BI corrigé par l’utilisateur";
+  }
+
+  return {
+    detected: true,
+    label,
+    reason: "user_corrected_or_reprioritized_active_evidence",
+    markers: {
+      hasCorrectionMarker,
+      domainHits
+    }
+  };
+}
+
+function buildCorrectedEvidence(correction, answer, comment, previousEvidence) {
+  if (!correction) return null;
+
+  return {
+    evidence_id: `user_corrected_q1_${Date.now()}`,
+    label: correction.label,
+    source: "user_correction_q1",
+    previous_evidence_id: previousEvidence?.evidence_id || null,
+    previous_evidence_label: previousEvidence?.label || null,
+    raw_text: answer,
+    user_comment: comment || null,
+    usage_status: "corrected_by_user",
+    correction_reason: correction.reason,
+    match_score: Math.max(12, (previousEvidence?.match_score || 8) + 2),
+    created_at: nowIso()
+  };
+}
+
+function scoreGainWithEvidenceCorrection(question, answer, correction) {
+  const rawGain = computeGain(question, answer);
+
+  if (!correction) {
+    return {
+      gain: rawGain,
+      reason: "Réponse exploitable sans correction de preuve active.",
+      maxReason: rawGain === question.maxGain
+        ? "La réponse apporte les éléments attendus pour cette question."
+        : "Certains éléments restent à préciser."
+    };
+  }
+
+  const cappedGain = Math.min(rawGain, Math.max(1, question.maxGain - 1));
+  return {
+    gain: cappedGain,
+    reason: "La réponse est utile et corrige la hiérarchie des preuves. TBZ intègre la correction avant la question suivante.",
+    maxReason: "Le gain est plafonné car la preuve proposée par TBZ a dû être corrigée : la hiérarchie de preuve n’était pas encore fiable."
+  };
 }
 
 function computeGain(question, answer) {
@@ -632,9 +748,22 @@ function submitAnswer() {
   const question = questions[state.questionIndex];
   const prompt = buildQuestionPrompt(state.questionIndex);
   const before = state.score;
-  const gain = computeGain(question, answer);
+  const evidenceBefore = state.activeEvidence ? JSON.parse(JSON.stringify(state.activeEvidence)) : null;
+  const correction = detectEvidenceCorrection(answer, comment, state.questionIndex);
+  const correctedEvidence = buildCorrectedEvidence(correction, answer, comment, evidenceBefore);
+  const gainDecision = scoreGainWithEvidenceCorrection(question, answer, correction);
+  const gain = gainDecision.gain;
   const after = Math.min(100, before + gain);
   const understood = summarizeAnswer(answer);
+
+  if (correctedEvidence) {
+    state.secondaryEvidence = evidenceBefore;
+    state.activeEvidence = correctedEvidence;
+
+    if (state.rawResolution && Array.isArray(state.rawResolution.proof_candidates)) {
+      state.rawResolution.proof_candidates.unshift(correctedEvidence);
+    }
+  }
 
   const record = {
     interaction_type: "question_answer",
@@ -642,7 +771,19 @@ function submitAnswer() {
     question_title: question.title,
     active_offer: state.activeOffer,
     raw_resolution_snapshot: state.rawResolution,
+    active_evidence_before: evidenceBefore,
+    active_evidence_after: state.activeEvidence,
     active_evidence: state.activeEvidence,
+    secondary_evidence: state.secondaryEvidence,
+    evidence_correction: correction ? {
+      applied: true,
+      corrected_label: correctedEvidence?.label,
+      previous_label: evidenceBefore?.label,
+      reason: correction.reason,
+      markers: correction.markers
+    } : {
+      applied: false
+    },
     alternative_evidence_candidates: selectEvidenceForOffer(state.rawResolution, state.activeOffer).alternatives,
     question_prompt: prompt,
     user_answer_raw: answer,
@@ -650,17 +791,21 @@ function submitAnswer() {
     assistant_interpretation: {
       understood,
       appreciated_signals: question.appreciated,
-      missing_for_max_score: question.missing
+      missing_for_max_score: correction
+        ? question.missing.concat(["preuve active corrigée par l’utilisateur : vérifier la nouvelle hiérarchie"])
+        : question.missing
     },
     score_before: before,
     score_gain_obtained: gain,
     score_gain_potential: question.maxGain,
+    score_gain_reason: gainDecision.reason,
+    score_non_max_reason: gainDecision.maxReason,
     score_after: after,
     user_can_dispute: true,
     usage_decision: {
       store_in_raw: true,
       use_in_working_cv: true,
-      needs_human_review: Boolean(comment),
+      needs_human_review: Boolean(comment) || Boolean(correction),
       trace_first_no_filtering: true
     },
     created_at: nowIso()
@@ -677,13 +822,20 @@ function submitAnswer() {
     interaction_ref: record.question_title
   });
 
+  const correctionFeedback = correction
+    ? `<p><strong>Correction de preuve intégrée :</strong> TBZ remplace la preuve active par « ${escapeHtml(state.activeEvidence.label)} » et conserve l’ancienne preuve comme secondaire.</p>`
+    : "";
+
   const feedback = `
     <div class="feedback-panel">
       <h3>Retour TBZ sur votre réponse</h3>
       <p><strong>Ce que j’ai compris :</strong> ${understood.map(escapeHtml).join(", ")}.</p>
+      ${correctionFeedback}
       <p><strong>Ce qui est solide :</strong> ${question.appreciated.map(escapeHtml).join(", ")}.</p>
-      <p><strong>Ce qui manque pour le maximum :</strong> ${question.missing.map(escapeHtml).join(", ")}.</p>
+      <p><strong>Ce qui manque pour le maximum :</strong> ${record.assistant_interpretation.missing_for_max_score.map(escapeHtml).join(", ")}.</p>
       <p><strong>Score :</strong> ${before} → ${after} &nbsp; | &nbsp; Gain obtenu : +${gain} / +${question.maxGain}</p>
+      <p><strong>Pourquoi :</strong> ${escapeHtml(gainDecision.reason)}</p>
+      <p><strong>Pourquoi pas forcément le maximum :</strong> ${escapeHtml(gainDecision.maxReason)}</p>
       <div class="notice warning">
         Si cette lecture est inexacte, trop prudente ou trop généreuse, corrigez-la avant génération du CV. Votre commentaire sera conservé dans le RAW.
       </div>
@@ -708,6 +860,7 @@ function buildUpdatedRaw(deliverableType = "all_working_deliverables") {
     offer_text_excerpt: state.offerText.slice(0, 3000),
     raw_resolution_snapshot: state.rawResolution,
     active_evidence: state.activeEvidence,
+    secondary_evidence: state.secondaryEvidence,
     alternative_evidence_candidates: selectEvidenceForOffer(state.rawResolution, state.activeOffer).alternatives,
     score_final: state.score,
     score_history: state.scoreHistory,
@@ -769,6 +922,10 @@ ${state.scoreHistory.map((item) => `- ${item.from ?? "initial"} → ${item.to} $
 
 ${state.activeEvidence?.label}
 
+## Preuve secondaire
+
+${state.secondaryEvidence?.label || "Aucune"}
+
 ## Preuves alternatives
 
 ${selectEvidenceForOffer(state.rawResolution, state.activeOffer).alternatives.map((proof) => `- ${proof.label}`).join("\n")}
@@ -823,6 +980,9 @@ ${state.activeOffer?.display_title}
 
 ## Preuve active
 ${state.activeEvidence?.label}
+
+## Preuve secondaire
+${state.secondaryEvidence?.label || "Aucune"}
 
 ## Resolver RAW
 Statut : ${state.rawResolution?.resolver_status}
